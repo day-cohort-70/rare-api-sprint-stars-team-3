@@ -18,10 +18,26 @@ def retrieve_post(url):
         """,
             (url["pk"],),
         )
-    query_results = db_cursor.fetchone()
+        query_results = db_cursor.fetchone()
 
-    dictionary_version_of_object = dict(query_results)
-    serialized_ship = json.dumps(dictionary_version_of_object)
+        dictionary_version_of_object = dict(query_results)
+        serialized_ship = json.dumps(dictionary_version_of_object)
+
+    elif "_expand" in url["query_params"]:
+        db_cursor.execute(
+            """
+       SELECT Posts.*, Users.id AS user_id, Users.username, Users.email
+            FROM Posts
+            JOIN Users ON Posts.user_Id = Users.id
+            WHERE Posts.id =?
+        """,
+            (url["pk"],),
+        )
+
+        query_results = db_cursor.fetchone()
+
+        dictionary_version_of_object = dict(query_results)
+        serialized_ship = json.dumps(dictionary_version_of_object)
 
     return serialized_ship
 
