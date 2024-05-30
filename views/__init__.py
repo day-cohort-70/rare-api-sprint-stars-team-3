@@ -1,1 +1,1 @@
-from .posts import retrieve_post
+from .posts import retrieve_post, list_posts

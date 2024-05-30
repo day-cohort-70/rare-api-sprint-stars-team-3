@@ -2,7 +2,7 @@ import json
 from http.server import HTTPServer
 from nss_handler import HandleRequests, status
 
-from views import retrieve_post
+from views import retrieve_post, list_posts
 
 
 class JSONServer(HandleRequests):
@@ -14,7 +14,10 @@ class JSONServer(HandleRequests):
         if url["requested_resource"] == "posts":
             if url["pk"] != 0:
                 response_body = retrieve_post(url)
-        return self.response(response_body, status.HTTP_200_SUCCESS.value)
+                return self.response(response_body, status.HTTP_200_SUCCESS.value)
+            response_body = list_posts(url)
+            return self.response(response_body, status.HTTP_200_SUCCESS.value)
+
 
 
 def main():
