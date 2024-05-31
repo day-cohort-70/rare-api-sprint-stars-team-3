@@ -85,7 +85,7 @@ CREATE TABLE "Categories" (
   "label" VARCHAR
 );
 
-INSERT INTO Categories(label) VALUES ('News'),('Science');
+INSERT INTO Categories(label) VALUES ('News'),('Science'),;
 INSERT INTO Tags (label) VALUES ('JavaScript');
 INSERT INTO Reactions (label, image_url) VALUES ('happy', 'https://pngtree.com/so/happy');
 
@@ -114,7 +114,7 @@ VALUES
 (1, 2, 'Great introduction'),
 (2, 1, 'Ive been waiting for this guide.'),
 (1, 2, 'Master the basics of JavaScript.'),
-(3, 2, 'Great introduction');
+(3, 2, 'Great introduction')
 
 
 INSERT INTO PostTags (post_id, tag_id)
