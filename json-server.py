@@ -1,6 +1,7 @@
 import json
 from http.server import HTTPServer
 from nss_handler import HandleRequests, status
+<<<<<<< HEAD
 
 
 from views import (
@@ -13,6 +14,10 @@ from views import (
     update_category,
     create_user,
 )
+=======
+from views import retrieve_post, list_posts, login_user, list_tags
+
+>>>>>>> 7d65d61 (Add url parsing for POST)
 
 
 class JSONServer(HandleRequests):
@@ -27,6 +32,12 @@ class JSONServer(HandleRequests):
                 return self.response(response_body, status.HTTP_200_SUCCESS.value)
             response_body = list_posts(url)
             return self.response(response_body, status.HTTP_200_SUCCESS.value)
+        
+        if url["requested_resource"] == "tags":
+            
+            response_body = list_tags()
+            return self.response(response_body, status.HTTP_200_SUCCESS.value)
+
 
         if url["requested_resource"] == "categories":
             if url["pk"] != 0:
