@@ -1,8 +1,6 @@
 import json
 from http.server import HTTPServer
 from nss_handler import HandleRequests, status
-<<<<<<< HEAD
-
 
 from views import (
     retrieve_post,
@@ -13,11 +11,8 @@ from views import (
     delete_category,
     update_category,
     create_user,
+    list_tags,
 )
-=======
-from views import retrieve_post, list_posts, login_user, list_tags
-
->>>>>>> 7d65d61 (Add url parsing for POST)
 
 
 class JSONServer(HandleRequests):
