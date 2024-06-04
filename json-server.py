@@ -11,6 +11,7 @@ from views import (
     list_categories,
     delete_category,
     update_category,
+    create_user,
 )
 
 
@@ -59,6 +60,16 @@ class JSONServer(HandleRequests):
 
         if url["requested_resource"] == "categories":
             successfully_posted = create_category(request_body)
+            if successfully_posted:
+                return self.response("", status.HTTP_204_SUCCESS_NO_RESPONSE_BODY.value)
+
+            return self.response(
+                "Requested resource not found",
+                status.HTTP_500_SERVER_ERROR.value,
+            )
+
+        if url["requested_resource"] == "users":
+            successfully_posted = create_user(request_body)
             if successfully_posted:
                 return self.response("", status.HTTP_204_SUCCESS_NO_RESPONSE_BODY.value)
 
