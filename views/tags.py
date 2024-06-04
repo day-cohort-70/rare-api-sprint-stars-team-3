@@ -1,6 +1,5 @@
 import sqlite3
 import json
-from datetime import datetime
 import logging
 
 def list_tags():
