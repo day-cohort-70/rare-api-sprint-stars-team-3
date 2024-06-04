@@ -50,9 +50,6 @@ class JSONServer(HandleRequests):
 
         url = self.parse_url(self.path)
         pk = url["pk"]
-        # content_len = int(self.headers.get("content-length", 0))
-        # request_body = self.rfile.read(content_len)
-        # request_body = json.loads(request_body)
         content_len = int(self.headers.get("content-length", 0))
         request_body_bytes = self.rfile.read(content_len)
         request_body_str = request_body_bytes.decode()  # Decode bytes to string
