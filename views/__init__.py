@@ -8,5 +8,5 @@ from .categories import (
     update_category,
 )
 
-from .tags import list_tags
+from .tags import list_tags, update_tag, insert_tag, delete_tag
 

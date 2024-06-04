@@ -12,6 +12,9 @@ from views import (
     update_category,
     create_user,
     list_tags,
+    insert_tag,
+    update_tag,
+    delete_tag
 )
 
 
@@ -42,34 +45,48 @@ class JSONServer(HandleRequests):
             return self.response(response_body, status.HTTP_200_SUCCESS.value)
 
     def do_POST(self):
-        # this is the login logic for user
-        if self.path == "/login":
 
-            content_length = int(self.headers["Content-Length"])
-            body = self.rfile.read(content_length)
-            user_data = json.loads(body)
-            print(user_data)
+        # below will parse the self.path to dictionary so that python can exicute nessecary conditional logic for tickets
+
+        url = self.parse_url(self.path)
+        pk = url["pk"]
+        # content_len = int(self.headers.get("content-length", 0))
+        # request_body = self.rfile.read(content_len)
+        # request_body = json.loads(request_body)
+        content_len = int(self.headers.get("content-length", 0))
+        request_body_bytes = self.rfile.read(content_len)
+        request_body_str = request_body_bytes.decode()  # Decode bytes to string
+        request_body = json.loads(request_body_str)  # Parse JSON string to dict
+
+        if self.path == "/login":
+            user_data = request_body
             response = login_user(user_data)
-            print(response)
             self.send_response(200)
             self.send_header("Content-type", "application/json")
             self.send_header("Access-Control-Allow-Origin", "*")
             self.end_headers()
             self.wfile.write(json.dumps(response).encode())
 
-        # below will parse the self.path to dictionary so that python can exicute nessecary conditional logic for tickets
-        url = self.parse_url(self.path)
-        pk = url["pk"]
-        content_len = int(self.headers.get("content-length", 0))
-        request_body = self.rfile.read(content_len)
-        request_body = json.loads(request_body)
+
 
         if url["requested_resource"] == "categories":
             successfully_posted = create_category(request_body)
             if successfully_posted:
                 return self.response("", status.HTTP_204_SUCCESS_NO_RESPONSE_BODY.value)
-
-            return self.response(
+            else:
+                return self.response(
+                "Requested resource not found",
+                status.HTTP_500_SERVER_ERROR.value,
+            )
+        if url["requested_resource"] == "tags":
+            if pk != 0:
+                successfully_posted = update_tag(pk, request_body)
+            else:
+                successfully_posted = insert_tag(request_body)
+            if successfully_posted:
+                return self.response("", status.HTTP_204_SUCCESS_NO_RESPONSE_BODY.value)
+            else:
+                return self.response(
                 "Requested resource not found",
                 status.HTTP_500_SERVER_ERROR.value,
             )
@@ -92,6 +109,13 @@ class JSONServer(HandleRequests):
         if url["requested_resource"] == "categories":
             if pk != 0:
                 successfully_posted = delete_category(pk)
+                if successfully_posted:
+                    return self.response(
+                        "", status.HTTP_204_SUCCESS_NO_RESPONSE_BODY.value
+                    )
+        elif url["requested_resource"] == "tags":
+            if pk != 0:
+                successfully_posted = delete_tag(pk)
                 if successfully_posted:
                     return self.response(
                         "", status.HTTP_204_SUCCESS_NO_RESPONSE_BODY.value
