@@ -4,8 +4,8 @@ from nss_handler import HandleRequests, status
 
 from views import (
     retrieve_post,
-    list_posts,
-    login_user,
+    list_posts, 
+    login_user, create_post,
     create_category,
     list_categories,
     delete_category,
@@ -97,6 +97,7 @@ class JSONServer(HandleRequests):
                 "Requested resource not found",
                 status.HTTP_500_SERVER_ERROR.value,
             )
+        
 
     def do_DELETE(self):
         """Handle DELETE requests from a client"""
