@@ -75,3 +75,20 @@ def update_category(pk, category_data):
         )
         rows_affected = db_cursor.rowcount
     return True if rows_affected > 0 else False
+
+
+def retrieve_category(pk):
+    with sqlite3.connect("./db.sqlite3") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+        db_cursor.execute(
+            """
+            SELECT * FROM Categories WHERE id =?
+            """,
+            (pk,),
+        )
+        query_results = db_cursor.fetchone()
+
+        dictionary_version_of_object = dict(query_results)
+        serialized_post = json.dumps(dictionary_version_of_object)
+        return serialized_post

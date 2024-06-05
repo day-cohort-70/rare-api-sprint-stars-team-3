@@ -8,6 +8,7 @@ from .categories import (
     list_categories,
     delete_category,
     update_category,
+    retrieve_category,
 )
 
 from .tags import list_tags, update_tag, insert_tag, delete_tag
