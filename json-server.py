@@ -98,6 +98,30 @@ class JSONServer(HandleRequests):
                 status.HTTP_500_SERVER_ERROR.value,
             )
         
+        # if url["requested_resource"] == "posts":
+        #     successfully_posted = create_post(request_body)
+        #     if successfully_posted:
+        #         return self.response("", status.HTTP_204_SUCCESS_NO_RESPONSE_BODY.value)
+
+        #     return self.response(
+        #         "Requested resource not found",
+        #         status.HTTP_500_SERVER_ERROR.value,
+        #     )
+
+        if url["requested_resource"] == "posts":
+        # Call create_post with the request body
+            post_creation_result = create_post(request_body)
+        # Check if the post was successfully created
+        if post_creation_result['valid']:
+            # Return the entire response from create_post, including the token and valid flag
+            return self.response(post_creation_result, status.HTTP_201_SUCCESS_CREATED.value)
+        else:
+            # If the post creation was not valid, return an error message
+            return self.response(
+                {"error": "Failed to create post."},
+                status.HTTP_500_SERVER_ERROR.value,
+            )
+        
 
     def do_DELETE(self):
         """Handle DELETE requests from a client"""

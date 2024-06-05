@@ -74,7 +74,9 @@ def list_posts(url):
 
 def create_post(post_data):
     with sqlite3.connect("./db.sqlite3") as conn:
+        conn.row_fsctory = sqlite3.Row
         db_cursor = conn.cursor()
+
         db_cursor.execute(
             """
             INSERT INTO Posts (user_id, category_id, title, publication_date, image_url, content, approved) VALUES (?,?,?,?,?,?,1)
@@ -90,6 +92,12 @@ def create_post(post_data):
                 datetime.now(),
             ),
         )
-        conn.commit()
-        return True
-    return False
+
+        id = db_cursor.lastrowid
+        
+        return json.dumps({
+            'token': id,
+            'valid': True
+        })
+
+
