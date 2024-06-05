@@ -5,6 +5,7 @@ from nss_handler import HandleRequests, status
 from views import (
     retrieve_post,
     list_posts,
+    list_user_posts,
     login_user,
     create_post,
     create_category,
@@ -43,10 +44,15 @@ class JSONServer(HandleRequests):
                 return self.response(response_body, status.HTTP_200_SUCCESS.value)
             response_body = list_categories(url)
             return self.response(response_body, status.HTTP_200_SUCCESS.value)
+        
+        if url["requested_resource"] == "userposts":
+            if url["pk"] != 0:
+                response_body = list_user_posts(url)
+                return self.response(response_body, status.HTTP_200_SUCCESS.value)
 
     def do_POST(self):
 
-        # below will parse the self.path to dictionary so that python can exicute nessecary conditional logic for tickets
+        # below will parse the self.path to dictionary so that python can execute necessary conditional logic for tickets
 
         url = self.parse_url(self.path)
         pk = url["pk"]
