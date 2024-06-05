@@ -7,6 +7,7 @@ from views import (
     list_posts,
     list_user_posts,
     login_user,
+    create_post,
     create_category,
     list_categories,
     delete_category,
@@ -31,12 +32,11 @@ class JSONServer(HandleRequests):
                 return self.response(response_body, status.HTTP_200_SUCCESS.value)
             response_body = list_posts(url)
             return self.response(response_body, status.HTTP_200_SUCCESS.value)
-        
+
         if url["requested_resource"] == "tags":
-            
+
             response_body = list_tags()
             return self.response(response_body, status.HTTP_200_SUCCESS.value)
-
 
         if url["requested_resource"] == "categories":
             if url["pk"] != 0:
@@ -70,17 +70,15 @@ class JSONServer(HandleRequests):
             self.end_headers()
             self.wfile.write(json.dumps(response).encode())
 
-
-
         if url["requested_resource"] == "categories":
             successfully_posted = create_category(request_body)
             if successfully_posted:
                 return self.response("", status.HTTP_204_SUCCESS_NO_RESPONSE_BODY.value)
             else:
                 return self.response(
-                "Requested resource not found",
-                status.HTTP_500_SERVER_ERROR.value,
-            )
+                    "Requested resource not found",
+                    status.HTTP_500_SERVER_ERROR.value,
+                )
         if url["requested_resource"] == "tags":
             if pk != 0:
                 successfully_posted = update_tag(pk, request_body)
@@ -90,9 +88,9 @@ class JSONServer(HandleRequests):
                 return self.response("", status.HTTP_204_SUCCESS_NO_RESPONSE_BODY.value)
             else:
                 return self.response(
-                "Requested resource not found",
-                status.HTTP_500_SERVER_ERROR.value,
-            )
+                    "Requested resource not found",
+                    status.HTTP_500_SERVER_ERROR.value,
+                )
 
         if url["requested_resource"] == "users":
             successfully_posted = create_user(request_body)
@@ -103,6 +101,22 @@ class JSONServer(HandleRequests):
                 "Requested resource not found",
                 status.HTTP_500_SERVER_ERROR.value,
             )
+
+        if url["requested_resource"] == "posts":
+            
+            successfully_posted = create_post(request_body)
+
+            post_creation_result = json.loads(successfully_posted)
+        
+        if post_creation_result["valid"]:
+            
+            return self.response(
+                successfully_posted, status.HTTP_201_SUCCESS_CREATED.value
+            )
+        else:
+            
+            error_response = json.dumps({"error": "Failed to create post."})
+            return self.response(error_response, status.HTTP_500_SERVER_ERROR.value)
 
     def do_DELETE(self):
         """Handle DELETE requests from a client"""
