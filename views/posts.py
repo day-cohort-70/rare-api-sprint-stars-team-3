@@ -82,7 +82,7 @@ def list_user_posts(url):
             JOIN Categories ON Posts.category_id = Categories.id           
             WHERE User_id = ? 
           
-        """, [url["pk"]])
+        """, (url["pk"],))
 
         query_results = db_cursor.fetchall()
 

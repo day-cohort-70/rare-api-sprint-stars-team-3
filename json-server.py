@@ -52,7 +52,7 @@ class JSONServer(HandleRequests):
 
     def do_POST(self):
 
-        # below will parse the self.path to dictionary so that python can exicute nessecary conditional logic for tickets
+        # below will parse the self.path to dictionary so that python can execute necessary conditional logic for tickets
 
         url = self.parse_url(self.path)
         pk = url["pk"]
