@@ -74,22 +74,22 @@ def list_posts(url):
 
 def create_post(post_data):
     with sqlite3.connect("./db.sqlite3") as conn:
-        conn.row_fsctory = sqlite3.Row
+        conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
         db_cursor.execute(
             """
-            INSERT INTO Posts (user_id, category_id, title, publication_date, image_url, content, approved) VALUES (?,?,?,?,?,?,1)
+            INSERT INTO Posts (user_id, category_id, title, publication_date, image_url, content, approved) VALUES (?,?,?,?,?,?,?)
         """,
             (
                 post_data["user_id"],
                 post_data["category_id"],
                 post_data["title"],
-                post_data["publication_date"],
+                datetime.now(),
                 post_data["image_url"],
                 post_data["content"],
-                post_data["approved"],
-                datetime.now(),
+                1 if post_data["approved"] else 0,
+                
             ),
         )
 
