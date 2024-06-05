@@ -5,6 +5,7 @@ from nss_handler import HandleRequests, status
 from views import (
     retrieve_post,
     list_posts,
+    list_user_posts,
     login_user,
     create_category,
     list_categories,
@@ -14,7 +15,7 @@ from views import (
     list_tags,
     insert_tag,
     update_tag,
-    delete_tag
+    delete_tag,
 )
 
 
@@ -43,6 +44,11 @@ class JSONServer(HandleRequests):
                 return self.response(response_body, status.HTTP_200_SUCCESS.value)
             response_body = list_categories(url)
             return self.response(response_body, status.HTTP_200_SUCCESS.value)
+        
+        if url["requested_resource"] == "userposts":
+            if url["pk"] != 0:
+                response_body = list_user_posts(url)
+                return self.response(response_body, status.HTTP_200_SUCCESS.value)
 
     def do_POST(self):
 

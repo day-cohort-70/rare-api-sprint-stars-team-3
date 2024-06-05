@@ -67,4 +67,29 @@ def list_posts(url):
         
         return serialized_posts
         
+def list_user_posts(url):
 
+    with sqlite3.connect("./db.sqlite3") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+    # if "_expand" in url["query_params"]:
+
+        db_cursor.execute("""
+            SELECT Posts.* , Users.id AS User_id, Users.username, Users.email, Categories.*
+            FROM Posts
+            JOIN Users ON Posts.user_Id = Users.id  
+            JOIN Categories ON Posts.category_id = Categories.id           
+            WHERE User_id = ? 
+          
+        """, [url["pk"]])
+
+        query_results = db_cursor.fetchall()
+
+        posts=[]
+        for row in query_results:
+            posts.append(dict(row))
+
+        serialized_posts = json.dumps(posts)
+        
+        return serialized_posts

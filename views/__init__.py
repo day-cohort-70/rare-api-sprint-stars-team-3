@@ -1,4 +1,4 @@
-from .posts import retrieve_post, list_posts
+from .posts import retrieve_post, list_posts, list_user_posts
 from .user import login_user, create_user
 
 from .categories import (
