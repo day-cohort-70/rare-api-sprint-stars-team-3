@@ -147,3 +147,6 @@ VALUES
 
 
 
+-- Delete items from the database
+-- DELETE FROM Users
+-- WHERE id BETWEEN 11 AND 15;
