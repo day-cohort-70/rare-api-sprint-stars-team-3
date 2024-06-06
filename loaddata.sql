@@ -123,3 +123,27 @@ VALUES
 (2, 2), -- Assuming post with id 2 has tag with id 2
 (3, 3); -- Assuming post with id 3 has tag with id 3
 
+DELETE FROM Posts WHERE id = 1;
+DELETE FROM Posts WHERE id = 2;
+DELETE FROM Posts WHERE id = 3;
+INSERT INTO Posts (user_id, category_id, title, publication_date, image_url, content, approved)
+VALUES
+(1, 4, 'Introduction to Web Development', '2024-06-01', 'https://sklc-tinymce-2021.s3.amazonaws.com/comp/2023/02/179_1675948994.png', 'A comprehensive guide to web development.', 1),
+(2, 4, 'Learning JavaScript', '2024-06-02', 'https://sllearnenginedev.blob.core.windows.net/material-images/95433922af1f4ecb996b9a6dd502b5c5-JS_1.png', 'Master the basics of JavaScript.', 1),
+(1, 4, 'Design Principles for Beginners', '2024-06-03', 'https://saigontechnology.com/assets/media/software-development-process-models.png', 'Understand the fundamentals of design.', 1),
+(1, 1, 'How to accelerate software development with generative AI', '2024-08-01', 'https://datasciencedojo.com/wp-content/uploads/Generative-AI-roadmap-1030x1030.jpg', 'Generative AI tools can significantly improve software developers productivity on common tasks.', 1),
+(1, 4, 'Thomas Dohmke on improving engineering experience using generative AI', '2024-02-01', 'https://www1.onpassive.com/blog/wp-content/uploads/2022/11/11160344/AI-powered-software-development-768x768.jpg', 'A Look At Artificial Intelligences Role In Software Development.', 1),
+(2, 4, 'Introduction to Web Development', '2024-06-01', 'https://sklc-tinymce-2021.s3.amazonaws.com/comp/2023/02/179_1675948994.png', 'A comprehensive guide to web development.', 1),
+(2, 4, 'Learning JavaScript', '2024-06-02', 'https://sllearnenginedev.blob.core.windows.net/material-images/95433922af1f4ecb996b9a6dd502b5c5-JS_1.png', 'Master the basics of JavaScript.', 1);
+
+
+
+
+
+
+
+
+
+
+
+

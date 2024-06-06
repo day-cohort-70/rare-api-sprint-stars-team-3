@@ -17,6 +17,7 @@ from views import (
     insert_tag,
     update_tag,
     delete_tag,
+    retrieve_category,
 )
 
 
@@ -25,6 +26,7 @@ class JSONServer(HandleRequests):
 
         response_body = ""
         url = self.parse_url(self.path)
+        pk = url["pk"]
 
         if url["requested_resource"] == "posts":
             if url["pk"] != 0:
@@ -40,11 +42,11 @@ class JSONServer(HandleRequests):
 
         if url["requested_resource"] == "categories":
             if url["pk"] != 0:
-                response_body = ""
+                response_body = retrieve_category(pk)
                 return self.response(response_body, status.HTTP_200_SUCCESS.value)
             response_body = list_categories(url)
             return self.response(response_body, status.HTTP_200_SUCCESS.value)
-        
+
         if url["requested_resource"] == "userposts":
             if url["pk"] != 0:
                 response_body = list_user_posts(url)
@@ -103,18 +105,18 @@ class JSONServer(HandleRequests):
             )
 
         if url["requested_resource"] == "posts":
-            
+
             successfully_posted = create_post(request_body)
 
             post_creation_result = json.loads(successfully_posted)
-        
+
         if post_creation_result["valid"]:
-            
+
             return self.response(
                 successfully_posted, status.HTTP_201_SUCCESS_CREATED.value
             )
         else:
-            
+
             error_response = json.dumps({"error": "Failed to create post."})
             return self.response(error_response, status.HTTP_500_SERVER_ERROR.value)
 
